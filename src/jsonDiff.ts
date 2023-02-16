@@ -1,4 +1,8 @@
-import { Dictionary, difference, find, intersection, keyBy } from 'lodash';
+import { difference, find, intersection, keyBy } from 'lodash-es';
+
+interface Dictionary<T> {
+  [index: string]: T;
+}
 
 type FunctionKey = (obj: any, getKeyName?: boolean) => any;
 
@@ -23,14 +27,6 @@ const compare = (oldObj: any, newObj: any, path: any, embeddedObjKeys: any, keyP
   let changes: any[] = [];
 
   const typeOfOldObj = getTypeOfObj(oldObj);
-  const typeOfNewObj = getTypeOfObj(newObj);
-
-  // if type of object changes, consider it as old obj has been deleted and a new object has been added
-  if (typeOfOldObj !== typeOfNewObj) {
-    changes.push({ type: Operation.REMOVE, key: getKey(path), value: oldObj });
-    changes.push({ type: Operation.ADD, key: getKey(path), value: newObj });
-    return changes;
-  }
 
   switch (typeOfOldObj) {
     case 'Date':
